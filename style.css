@@ -1,18 +1,41 @@
 canvas {
-    border: 5px solid black;
+    /* border: 5px solid black; */
 }
 
 .startgame {
+    width: 83vw;
+    height: 36vh;
     font-size: 50px;
-    background-color: #00FFFF;
+    /* background-color: #00FFFF; */
     color: black;
-    padding: 100px 100px;
+    padding: 200px 100px;
     border: 0;
     box-shadow: 0;
-    border-radius: 50px;
     margin-bottom: 20px;
-    /* display: flex; */
-    /* justify-content: center;  */
-    /* flex-direction: row; */
-    /* align-content: center; */
+    background-image: url('./images/deepsea.jpg');
+    background-size: 1250px 638px;
+    background-repeat: no-repeat;
 }
+
+#start-button {
+    /* display: flex; */
+    /* flex-direction: row; */
+    justify-content: center;
+    color: white;
+    background-color: lightskyblue;
+    border: none;
+    border-radius: 10px;
+    font-size: 50px;
+    /* border: 50px;
+    margin: 50px; */
+}
+
+/* #canvas{
+	position: absolute;
+    left: 0px;
+    top: 0px;
+    background-image: './images/bedsea.png';
+    background-repeat: no-repeat;
+    width: 120px;
+    height: 120px;
+} */

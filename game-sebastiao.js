@@ -1,91 +1,5 @@
 // console.log('hey seba');
 
-
-
-
-
-// function draw() {
-//     let canvas = document.getElementById('example');
-//     let ctx = canvas.getContext('2d');
-
-//     // creating
-//     ctx.fillStyle = "red";
-//     ctx.fillRect(70, 315, 50, 50);
-
-// }
-
-
-
-
-
-// function obstacles() {
-//     let canvas = document.getElementById('example');
-//     let ctx = canvas.getContext('2d');
-
-//     // draw obstacles
-//     ctx.fillStyle = 'black';
-//     ctx.fillRect(670, 100, 60, 60);
-
-//     ctx.fillStyle = 'black';
-//     ctx.fillRect(890, 250, 60, 60);
-
-//     ctx.fillStyle = 'black';
-//     ctx.fillRect(1100, 400, 60, 60);
-
-//     ctx.fillStyle = 'black';
-//     ctx.fillRect(890, 550, 60, 60);
-
-
-//     ctx.beginPath();
-//     ctx.arc(190, 100, 35, 0, Math.PI * 2);
-//     ctx.fillStyle = 'green';
-//     ctx.stroke();
-//     ctx.fill();
-//     ctx.closePath();
-
-//     ctx.beginPath();
-//     ctx.arc(310, 250, 35, 0, Math.PI * 2);
-//     ctx.fillStyle = 'green';
-//     ctx.stroke();
-//     ctx.fill();
-//     ctx.closePath();
-
-//     ctx.beginPath();
-//     ctx.arc(430, 400, 35, 0, Math.PI * 2);
-//     ctx.fillStyle = 'green';
-//     ctx.stroke();
-//     ctx.fill();
-//     ctx.closePath();
-
-//     ctx.beginPath();
-//     ctx.arc(550, 550, 35, 0, Math.PI * 2);
-//     ctx.fillStyle = 'green';
-//     ctx.stroke();
-//     ctx.fill();
-//     ctx.closePath();
-
-// }
-
-
-
-// draw();
-// obstacles();
-
-
-
-// let imageCharacter = document.getElementById('character'),
-// context = canvas.getContext('2d');
-
-// make_base();
-
-// function make_base() {
-//   image = new Image();
-//   image.src = 'img/fireball.png';
-//   image.onload = function(){
-//     context.drawImage(image, 0, 0);
-//   }
-// }
-
 window.onload = () => {
   const startgame = document.getElementById('startgame');
   document.getElementById('start-button').onclick = () => {
@@ -95,8 +9,14 @@ window.onload = () => {
   }
 }
 
-let image = new Image();
-image.src = './exampleSite/images/fireball.png';
+let imageBackground = new Image();
+imageBackground.src = './images/deepsea.jpg';
+
+let imageCharacter = new Image();
+imageCharacter.src = './images/fireball.png';
+
+let imageObstacle = new Image();
+imageObstacle.src = './images/star.png';
 
 let myObstacles = [];
 
@@ -122,12 +42,13 @@ let myGameArea = {
 
   // it will clear the game area before drawing again
   clear: function () {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.drawImage(imageBackground, 0, 0, this.canvas.width, this.canvas.height);
   },
 
   //   clearInterval(this.interval);
   stop: function () {
-    this.context.clearRect(0, 0, 1200, 800);
+    this.context.clearRect(0, 0, 1250, 800);
 
   let img = new Image();
   img.src = './images/gameover.png'
@@ -138,10 +59,11 @@ let myGameArea = {
   },
 
   score: function () {
-    var points = Math.floor(this.frames / 10);
+    let points = Math.floor(this.frames / 10);
     this.context.font = "30px serif";
     this.context.fillStyle = "green";
-    this.context.fillText("Score: " + points, 50, 50);
+    this.context.fillText( 'Score ' + points, 50, 50);
+    // this.context.drawImage(imageStar, 0, 0);
   }
 }
 
@@ -166,29 +88,33 @@ class Character {
     if (this.x >= 0 && this.x <= 1185) {
       this.x += this.speedX;
     } else if (this.x < 0) {
-      this.x += 1;
+      this.x = 0;
+      this.speedX = 0;
     } else if (this.x > 1185) {
-      this.x -= 1;
+      this.x = 1185;
+      this.speedX = 0;
     }
     if (this.y >= 0 && this.y <= 580) {
       this.y += this.speedY;
     } else if (this.y < 0) {
-      this.y += 1;
+      this.y = 0;
+      this.speedY = 0;
     } else if (this.y > 580) {
-      this.y -= 1;
+      this.y = 580;
+      this.speedY = 0;
     }
   }
 
-  update() {
+  update(image) {
     let ctx = myGameArea.context;
     ctx.fillStyle = this.color;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    // ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.drawImage(image, this.x, this.y, 80, 80);
 
     // // let canvas = document.getElementById('canvas');
     // // let context = canvas.getContext('2d');
 
     // // image.onload = function () {
-    //   ctx.drawImage(image, 500, 500);
     // // }
   }
 
@@ -229,7 +155,7 @@ let character = new Character(60, 60, 'red', 70, 315);
 function updateGameArea() {
   myGameArea.clear();
   character.newPos();
-  character.update();
+  character.update(imageCharacter);
 
   // update the obstacles array
   updateObstacles();
@@ -281,7 +207,7 @@ document.onkeyup = function (e) {
 function updateObstacles() {
   for (i = 0; i < myObstacles.length; i++) {
     myObstacles[i].y += 1;
-    myObstacles[i].update();
+    myObstacles[i].update(imageObstacle);
   }
   myGameArea.frames += 1;
   if (myGameArea.frames % 180 === 0) {
