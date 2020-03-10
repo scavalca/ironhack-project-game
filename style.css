@@ -1,3 +1,7 @@
+/* @import url('https://fonts.googleapis.com/css?family=Indie+Flower&display=swap'); */
+
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One|Indie+Flower&display=swap');
+
 canvas {
     /* border: 5px solid black; */
 }
@@ -15,6 +19,8 @@ canvas {
     background-image: url('./images/deepsea.jpg');
     background-size: 1250px 638px;
     background-repeat: no-repeat;
+    /* font-family: 'Indie Flower', cursive; */
+    font-family: 'Fredoka One', cursive;
 }
 
 #start-button {
