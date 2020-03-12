@@ -1,5 +1,3 @@
-// console.log('hey seba');
-
 window.onload = () => {
   const startgame = document.getElementById('startgame');
   document.getElementById('start-button').onclick = () => {
@@ -9,14 +7,14 @@ window.onload = () => {
   }
 }
 
-// let imageBackground = new Image();
-// imageBackground.src = './images/deepsea.jpg';
-
 let imageCharacter = new Image();
 imageCharacter.src = './images/sebastian.png';
 
 let imageObstacle = new Image();
 imageObstacle.src = './images/trashbagTwo.png';
+
+let imageStar = new Image();
+imageStar.src = './images/star.png'
 
 let soundGameOver = new Audio();
 soundGameOver.src = './images/gameoversound.mp3';
@@ -27,6 +25,8 @@ soundGame.src = './images/sebastiao.mp3';
 
 
 let myObstacles = [];
+
+let stars = [];
 
 let requestID = null;
 
@@ -60,22 +60,15 @@ let myGameArea = {
   },
 
   start: function () {
-    //canvas size
     this.canvas.width = 1250;
     this.canvas.height = 638;
     this.context = this.canvas.getContext("2d");
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
-    // this.interval = setInterval(updateGameArea, 10);
-
     requestID = window.requestAnimationFrame(updateGameArea);
-
-
   },
 
-  // it will clear the game area before drawing again
   clear: function () {
-    // this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.drawImage(this.imageBackground, 0, 0, this.canvas.width, this.canvas.height);
   },
 
@@ -83,21 +76,22 @@ let myGameArea = {
   stop: function () {
     this.context.clearRect(0, 0, 1250, 800);
 
-  let img = new Image();
-  img.src = './images/gameover.png'
-  img.onload = function () {
-    this.context.drawImage(img, 280, -50, 700, 700);
-  }.bind(this);
+    let img = new Image();
+    img.src = './images/gameover.png'
+    img.onload = function () {
+      this.context.drawImage(img, 280, -50, 700, 700);
+    }.bind(this);
     window.cancelAnimationFrame(requestID);
   },
 
   score: function () {
-    // let points = Math.floor(this.frames / 10);
     this.points = Math.floor(this.frames / 10);
-    this.context.font = "30px serif";
-    this.context.fillStyle = "black";
-    this.context.fillText(this.points, 100, 50);
-    this.context.drawImage(imageCharacter, 30, 13, 50, 50);
+    this.context.font = '35px arial';
+    this.context.fillStyle = 'white';
+    this.context.fillText('Score ' + this.points, 1040, 46  );
+    for (let i = 0; i < character.health; i += 1) {
+      this.context.drawImage(imageCharacter, 30 + 50 * i, 13, 40, 40);
+    }
   }
 }
 
@@ -114,9 +108,8 @@ class Character {
     this.speedX = 0;
     this.speedY = 0;
 
+    this.health = 5;
   }
-
-
 
   newPos() {
     if (this.x >= 0 && this.x <= 1170) {
@@ -163,22 +156,43 @@ class Character {
   }
 
   crashWith(obstacle) {
-    return !(
-      this.bottom() < obstacle.top() ||
-      this.top() > obstacle.bottom() ||
-      this.right() < obstacle.left() ||
-      this.left() > obstacle.right()
-    );
+    if (obstacle.length > 0) {
+      obstacle.forEach((elem, i) => {
+        if (
+          !(this.bottom() < elem.top() ||
+            this.top() > elem.bottom() ||
+            this.right() < elem.left() ||
+            this.left() > elem.right()
+          )
+        ) {
+          this.health -= 1;
+          obstacle.splice(i, 1);
+        };
+      })
+    }
+  }
+
+  crashWithStars(stars) {
+    if (stars.length > 0) {
+      stars.forEach((elem, i) => {
+        if (
+          !(this.bottom() < elem.top() ||
+            this.top() > elem.bottom() ||
+            this.right() < elem.left() ||
+            this.left() > elem.right()
+          )
+        ) {
+          this.health < 5 ? this.health += 1 : this.health = 5;
+          stars.splice(i, 1);
+        };
+      })
+    }
   }
 }
 
 
 //new component
-
-
 let character = new Character(60, 60, 'red', 70, 315);
-
-
 
 function updateGameArea() {
   myGameArea.clear();
@@ -188,19 +202,15 @@ function updateGameArea() {
   character.update(imageCharacter);
   faster();
   soundGame.play();
-
-  // update the obstacles array
+  console.log(character.health, myObstacles);
+  character.crashWith(myObstacles);
+  character.crashWithStars(stars);
   updateObstacles();
-
+  updateStars();
   requestID = window.requestAnimationFrame(updateGameArea);
   checkGameOver();
   myGameArea.score();
 }
-
-//play begins
-
-// myGameArea.start();
-
 
 // press keys to move up, down, left and right
 document.onkeydown = function (e) {
@@ -226,12 +236,9 @@ document.onkeyup = function (e) {
   character.speedY = 0;
 };
 
-// update obstacles
-
 let fast = 120;
-// console.log(points);
 
-function faster () {
+function faster() {
   if (myGameArea.points >= 50 && myGameArea.points < 99) {
     fast = 100;
   } else if (myGameArea.points >= 100 && myGameArea.points < 149) {
@@ -240,9 +247,7 @@ function faster () {
     fast = 60;
   } else if (myGameArea.points >= 200 && myGameArea.points < 249) {
     fast = 40;
-  } else if (myGameArea.points > 249) {
-    fast = 20;
-  }
+  } 
 }
 
 function updateObstacles() {
@@ -252,7 +257,7 @@ function updateObstacles() {
   }
   myGameArea.frames += 1;
   if (myGameArea.frames % fast === 0) {
-    let minWidth = 60;
+    let minWidth = 30;
     let maxWidth = 1190;
     let width = Math.floor(
       Math.random() * (maxWidth - minWidth + 1) + minWidth);
@@ -260,11 +265,24 @@ function updateObstacles() {
   }
 }
 
+function updateStars() {
+  for (i = 0; i < stars.length; i++) {
+    stars[i].x -= 1;
+    stars[i].update(imageStar);
+  }
+
+  if (myGameArea.frames % 1000 === 0) {
+    let minHeight = 0;
+    let maxHeight = 608;
+    let height = Math.floor(
+      Math.random() * (maxHeight - minHeight + 1) + minHeight);
+    stars.push(new Character(60, 60, "black", 1250, height));
+  }
+}
+
 function checkGameOver() {
-  let crashed = myObstacles.some(function (obstacle) {
-    return character.crashWith(obstacle);
-  });
-  if (crashed) {
+  if (character.health === 0) {
+    console.log('caiu game over');
     myGameArea.stop();
     soundGame.pause();
     soundGameOver.play();
