@@ -13,7 +13,7 @@ window.onload = () => {
 // imageBackground.src = './images/deepsea.jpg';
 
 let imageCharacter = new Image();
-imageCharacter.src = './images/fireball.png';
+imageCharacter.src = './images/sebastian.png';
 
 let imageObstacle = new Image();
 imageObstacle.src = './images/trashbagTwo.png';
@@ -206,16 +206,16 @@ function updateGameArea() {
 document.onkeydown = function (e) {
   switch (e.keyCode) {
     case 38: // up arrow
-      character.speedY -= 1;
+      character.speedY = -2.5;
       break;
     case 40: // down arrow
-      character.speedY += 1;
+      character.speedY = 2.5;
       break;
     case 37: // left arrow
-      character.speedX -= 1;
+      character.speedX = -2.5;
       break;
     case 39: // right arrow
-      character.speedX += 1;
+      character.speedX = 2.5;
       break;
   }
 };

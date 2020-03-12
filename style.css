@@ -55,7 +55,7 @@ canvas {
     font-family: 'Fredoka One', cursive;
     padding: 5px 30px;
     align-items: center;
-    margin: 50px 0;
+    margin: 100px 0 0 0;
     transition: background-color .2s ease, color .2s ease;
 }
 
