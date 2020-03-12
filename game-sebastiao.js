@@ -16,10 +16,14 @@ let imageCharacter = new Image();
 imageCharacter.src = './images/fireball.png';
 
 let imageObstacle = new Image();
-imageObstacle.src = './images/star.png';
+imageObstacle.src = './images/trashbagTwo.png';
 
 let soundGameOver = new Audio();
 soundGameOver.src = './images/gameoversound.mp3';
+soundGameOver.volume = 0.3;
+
+let soundGame = new Audio();
+soundGame.src = './images/sebastiao.mp3';
 
 
 let myObstacles = [];
@@ -183,6 +187,7 @@ function updateGameArea() {
   character.newPos();
   character.update(imageCharacter);
   faster();
+  soundGame.play();
 
   // update the obstacles array
   updateObstacles();
@@ -261,6 +266,7 @@ function checkGameOver() {
   });
   if (crashed) {
     myGameArea.stop();
+    soundGame.pause();
     soundGameOver.play();
     // function reload
     setInterval(() => {
