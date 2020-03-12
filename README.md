@@ -2,13 +2,8 @@
 
 ## Screenshots
 
-
-
-<div>
-<img width="400px" src="screenshots/screenshot.png">
-<img width="400px" src="screenshots/screenshot1.png">
-<div/>
-
+<img width="500px" src="screenshots/screenshot.png">
+<img width="500px" src="screenshots/screenshot1.png">
   
 ## Installation
 Clone or download this project, open the index.html file in your browser and have Fun.
