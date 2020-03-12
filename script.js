@@ -11,7 +11,7 @@ let imageCharacter = new Image();
 imageCharacter.src = './images/sebastian.png';
 
 let imageObstacle = new Image();
-imageObstacle.src = './images/trashbagTwo.png';
+imageObstacle.src = './images/trashBag.png';
 
 let imageStar = new Image();
 imageStar.src = './images/star.png'
@@ -216,16 +216,16 @@ function updateGameArea() {
 document.onkeydown = function (e) {
   switch (e.keyCode) {
     case 38: // up arrow
-      character.speedY = -2.5;
+      character.speedY = -3;
       break;
     case 40: // down arrow
-      character.speedY = 2.5;
+      character.speedY = 3;
       break;
     case 37: // left arrow
-      character.speedX = -2.5;
+      character.speedX = -3;
       break;
     case 39: // right arrow
-      character.speedX = 2.5;
+      character.speedX = 3;
       break;
   }
 };
@@ -247,7 +247,7 @@ function faster() {
     fast = 60;
   } else if (myGameArea.points >= 200 && myGameArea.points < 249) {
     fast = 40;
-  } 
+  }
 }
 
 function updateObstacles() {
